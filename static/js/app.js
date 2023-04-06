@@ -33,11 +33,11 @@ d3.json(url).then(function(data){
             defaultHoverText = defaultSample.otu_labels;
 
             // Select the Top 10 for each ID
-            sampleValues = defaultSampleValues.slice(0, 11).reverse();
-            otuIds = defaultOtuIds.slice(0, 11).reverse();
-            hoverText = defaultHoverText.slice(0, 11).reverse();
+            sampleValues = defaultSampleValues.slice(0, 10).reverse();
+            otuIds = defaultOtuIds.slice(0, 10).reverse();
+            hoverText = defaultHoverText.slice(0, 10).reverse();
 
-            // console.log(sampleValues);
+            console.log(sampleValues);
             console.log(otuIds);
             console.log(hoverText);
 
@@ -76,22 +76,26 @@ d3.json(url).then(function(data){
 
         // Bubble Chart
         function buildBubbleChart(){
-            var trace2 = {
+            let trace2 = {
+                type: 'bubble',
+                mode: 'markers',
                 x: defaultOtuIds,
                 y: defaultSampleValues,
                 text: defaultHoverText,
-                mode: 'markers',
-                markersize: {
+                marker: {
                     color: defaultOtuIds,
-                    size: defaultSampleValues
+                    size: defaultSampleValues,
+                    colorscale: "Earth"
                 }
             };
+
+            console.log(defaultSampleValues);
 
             // Plot the data for Trace2
             var bubbleChartData = [trace2];
 
             // Bubble Chart Layout
-            var bubbleChartLayout = {
+            let bubbleChartLayout = {
                 title: `<b>Bubble Chart of Test Subject's Sample Values</b>`,
                 xaxis: {title: "OTU ID"},
                 yaxis: {title: "Sample Value"},
@@ -184,9 +188,9 @@ function updatePlot() {
     updateOtuLabels = dashboardData.otu_labels;
 
     // Update Top 10
-    updatevalues_top10 = updateSampleValues.slice(0, 11).reverse();
-    updateotuIds_top10 = updateOtuIds.slice(0, 11).reverse();
-    updatelabels_top10 = updateOtuLabels.slice(0, 11).reverse();
+    updatevalues_top10 = updateSampleValues.slice(0, 10).reverse();
+    updateotuIds_top10 = updateOtuIds.slice(0, 10).reverse();
+    updatelabels_top10 = updateOtuLabels.slice(0, 10).reverse();
 
     // Update Bar Chart
     Plotly.restyle("bar", "x", [updatevalues_top10]);
@@ -199,6 +203,8 @@ function updatePlot() {
     Plotly.restyle("bubble", "text", [updateOtuLabels]);
     Plotly.restyle("bubble", "marker.color", [updateOtuIds]);
     Plotly.restyle("bubble", "marker.size", [updateSampleValues]);
+
+    console.log(updateSampleValues);
 
     // Update Demographic Info
     updateMetadata = data.metadata.filter(sample => sample.id == inputValue)[0];
